@@ -72,8 +72,13 @@ const styles = {
         position: 'absolute',
         right: '0',
         color: '#AD3113'
-    }
+    },
+    eyeIcon: {
+        cursor: 'pointer',
+        color: `${colors.txtGray}`,
+        paddingTop:'15px'
 
+      }
 
 
 }

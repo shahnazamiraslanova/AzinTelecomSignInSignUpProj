@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useSigninStyles } from './signin.style';
 import InputComponent from '../../core/shared/input/input.component';
@@ -6,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../core/configs/axios.config';
 import { Routes } from '../../router/routes';
 import { errorToast, successToast } from '../../core/shared/toast/toast';
-
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 const validate = (values: any) => {
   const errors: { username?: string; password?: string } = {};
 
@@ -22,8 +23,9 @@ const validate = (values: any) => {
 };
 
 const SigninComponent = () => {
-  const { main, title, buttons, form, forgotSpan } = useSigninStyles();
+  const { main, title, buttons, form, forgotSpan, eyeIcon } = useSigninStyles();
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const authenticateUser = async (userData: { username: string; password: string }) => {
     try {
@@ -32,16 +34,16 @@ const SigninComponent = () => {
       });
 
       const user = response.data.find((user: any) =>
-      (user.username === userData.username || user.email === userData.username) &&
-      user.password === userData.password
-    );
+        (user.username === userData.username || user.email === userData.username) &&
+        user.password === userData.password
+      );
 
       if (user) {
         navigate(Routes.home);
         successToast("Logged in") 
 
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userName',user.username)
+        localStorage.setItem('userName', user.username)
       } else {
         errorToast('Invalid username or password');
       }
@@ -61,6 +63,10 @@ const SigninComponent = () => {
     }
   });
 
+  const handlePasswordToggle = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
   return (
     <div className={main}>
       <p>Welcome to Site</p>
@@ -76,20 +82,28 @@ const SigninComponent = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.username && formik.errors.username ? formik.errors.username : null}
         />
-        <InputComponent
-          name="password"
-          label='Enter your Password'
-          type="password"
-          placeholder="Password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && formik.errors.password ? formik.errors.password : null}
-        />
+        <div style={{ position: 'relative' }}>
+          <InputComponent
+            name="password"
+            label='Enter your Password'
+            type={passwordVisible ? 'text' : 'password'}
+            placeholder="Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && formik.errors.password ? formik.errors.password : null}
+          />
+          <span 
+            onClick={handlePasswordToggle}
+            className={eyeIcon}
+            style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+          >
+            {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
         <span className={forgotSpan}>Forgot Password</span>
         <div className={buttons}>
           <ButtonComponent
-          
             content="Sign in"
             btnClassName='buttonMain'
             type="submit" 

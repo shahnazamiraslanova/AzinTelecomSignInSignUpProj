@@ -5,6 +5,7 @@ import { breakpoint } from '../../../assets/styles/abstracts/mixins';
 
 const styles = {
     input: {
+        
         margin:'10px 0',
         width: '100%',
         padding: '15px',
@@ -14,6 +15,7 @@ const styles = {
         color: '#808080',
         border: `1px solid ${colors.inputBorder}`,
         outline: 'none',
+        
         '&:focus': {
             outline: '1px solid #4285F4',
             boxShadow: `0px 4px 4px 0px ${colors.inputShadowColor}`,

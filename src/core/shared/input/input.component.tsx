@@ -16,7 +16,7 @@ const InputComponent = ({ name, type, label, placeholder, value, onChange, onBlu
         name={name}
         type={type}
         placeholder={placeholder}
-        value={value}
+        value={value} 
         onChange={onChange}
         onBlur={onBlur}
       />
